@@ -1,4 +1,4 @@
-CREATE or replace PROCEDURE mtd.proc_etl_stream_task_create()
+CREATE or replace PROCEDURE mtd.proc_etl_stream_task_create(warehouse_name STRING, run_frequency_minutes FLOAT)
 returns string
 language javascript
 as
@@ -9,7 +9,7 @@ SELECT 'TASK_' || es.SRC_TABLE_NAME|| '_TO_' || es.TGT_TABLE_NAME as TASK, row_n
 es.* from mtd.etl_sql es where INIT_FG = 0)
 SELECT 
 upper('CREATE STREAM IF NOT EXISTS STREAM_' || es.SRC_TABLE_NAME|| '_TO_' || es.TGT_TABLE_NAME || ' ON TABLE ' || src_t.SRC_TABLE_DATABASE ||'.'||  src_t.SRC_TABLE_SCHEMA || '.' || es.SRC_TABLE_NAME||' APPEND_ONLY = TRUE;') AS STREAM_DDL,
-'CREATE OR REPLACE TASK ' || es.TASK || ' WAREHOUSE = MICRO_ETL ' || IFF(es2.task is not null, ' AFTER ' || es2.task || ' AS ',' schedule = \\\'10 minute\\\' AS ')|| es.etl_sql||';' AS TASK_DDL
+'CREATE OR REPLACE TASK ' || es.TASK || ' WAREHOUSE = ` + WAREHOUSE_NAME + `' || IFF(es2.task is not null, ' AFTER ' || es2.task || ' AS ',' schedule = \\\'` + RUN_FREQUENCY_MINUTES + ` minute\\\' AS ')|| es.etl_sql||';' AS TASK_DDL
 FROM es
 JOIN MTD.MTD_SRC_TABLE src_t
 ON es.SRC_TABLE_NAME = upper(src_t.SRC_TABLE_NAME)
