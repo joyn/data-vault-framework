@@ -4,7 +4,7 @@ This project holds Snowflake Metadata Tables and Snowflake Stored Procedures to 
 The Framework can handle Plain Table, VARIANT Columns (JSON, AVRO), Arrays, Schema on Read and explicit definition of each Field.
 
 
-##Structure
+### Structure
 
 Tables:
 * MTD.MTD_SRC_TABLE
@@ -27,9 +27,11 @@ Stored Porcedures:
 * MTD.PROC_ETL_HUB
 * MTD.PROC_ETL_LINK
 * MTD.PROC_ETL_SAT
-* UTIL.PROC_ETL_STREAM_TASK_CREATE
+* MTD.PROC_ETL_STREAM_TASK_CREATE
+* MTD.TASK_DEPENDENCY_HANDLER 
+* MTD.TASK_DEPENDENCY_HANDLER_SOURCE_TABLE
 
-###Table Desciption
+### Table Desciption
 
 MTD.MTD_SRC_TABLE
 This table contains the Source Definition and Path to the Staging Table.
@@ -39,19 +41,27 @@ The Definition and Path to each Column is defined in The SRC_COLUMN Table, here 
 
 MTD.MTD_HUB
 Definition of the HUB Table Name.
+
 MTD.MTD_HUB_MAP
 Field Mappings of the Business Keys from SRC_TABLE & SRC_COLUMN and Definition of Order.
+
 MTD.MTD_LINK
 Definition of the LINK Table Name and if its a NonHistorized Link
+
 MTD.MTD_LINK_HUB_REF
 Definition of LINK - HUB Relations
+
 MTD.MTD_LINK_MAP
 Field Mappings of the Values from SRC_TABLE & SRC_COLUMN to a Non Historized Link (only used if NonHist-Flag is true in MTD_LINK)
+
 MTD.MTD_SAT 
 Definition of the SAT Table Name, Reference to the Parrent Object (HUB/LINK), if a Hash Diff is necessary and teh possibility to define as Multi Active Satelite
+
 MTD.MTD_SAT_MAP
 Field Mappings of the Values from SRC_TABLE & SRC_COLUMN for the Satelite Table
+
 MTD.MTD_MODEL_CREATION_LOG
 Log Table, where you can activate or deactivate a deployment/version
+
 MTD.ETL_SQL
 Table where all ETL Scripts are stored before they get into the TASK. It's the base for TASK & STREAM Creation
