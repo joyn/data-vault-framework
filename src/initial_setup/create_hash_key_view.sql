@@ -1,4 +1,3 @@
-USE SCHEMA MTD;
 CREATE OR REPLACE VIEW MTD.MTD_HASH_KEY AS
 SELECT  
 map.table_name, map.src_table_id, map.version_id,LISTAGG(src_c.array_path) as array_path, LISTAGG(src_c.FILTER_CRITERIA) as FILTER_CRITERIA,
